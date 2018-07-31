@@ -1,6 +1,9 @@
 #if os(Linux)
 import Glibc
 srandom(UInt32(clock()))
+#else
+//imports random number function
+import Foundation
 #endif
 
 // An array/list of valid hands
@@ -20,7 +23,14 @@ class Player {
 
   // function to randomly generate a hand 
   func count123() {
-    self.hand = (validHands[random() % validHands.count]);
+    var randomNumber = 0;
+#if os(Linux)
+    randomNumber = random() % validHands.count
+#else
+    let max = UInt32(validHands.count);
+    randomNumber = Int(arc4random_uniform(max))
+#endif
+    self.hand = (validHands[randomNumber]);
   }
 
   // return the user current hand
