@@ -22,7 +22,7 @@ class Game {
     
     // the winner
     var winner : Player?
-
+    
     init(playerA : Player, playerB: Player) {
         self.playerA = playerA
         self.playerAWins = 0;
@@ -53,21 +53,21 @@ class Game {
         // player showing hands
         print("")
         print("Player hands:")
-        print("  \(playerA.name) hand is \(playerA.getHand())")
-        print("  \(playerB.name) hand is \(playerB.getHand())")
+        print("  \(playerA.getName()) hand is \(playerA.getHand())")
+        print("  \(playerB.getName()) hand is \(playerB.getHand())")
         
         // Calculate result
         print("")
         print("Result:")
         let result = compareHand(playerA: playerA, playerB: playerB)
         if (result == 0) {
-            print("  playerA and playerB tie")
+            print("  \(playerA.name) and \(playerB.name) tie")
         } else if (result > 0) {
-            print("  playerA wins this hand.")
+            print("  \(playerA.name) wins this hand.")
             // record result
             playerAWins = playerAWins + 1
         } else {
-            print("  playerB wins this hand.")
+            print("  \(playerB.name) wins this hand.")
             // record result
             playerBWins = playerBWins + 1
         }
@@ -98,10 +98,10 @@ class Game {
     // return -1 if player loses
     func compareHand(playerA: Player, playerB: Player) -> Int {
         var result = 0
-
+        
         let playerAHand = playerA.getHand()
         let playerBHand = playerB.getHand()
-
+        
         if (playerAHand == "rock") {
             if (playerBHand == "rock") {
                 // rock vs rock, ties
@@ -142,5 +142,24 @@ class Game {
         }
         
         return result
+    }
+    
+    // keep playing until there is a winner: a player with 3 wins
+    func playUntilThereIsAWinner() -> Player {
+        var hasWinner = false
+        
+        var gameNumber = 0;
+        while(hasWinner == false) {
+            gameNumber = gameNumber + 1;
+            
+            print("")
+            print("### Playing game #\(gameNumber)")
+            game.playOneRound()
+            hasWinner = game.hasWinner()
+        }
+
+        print("Played total of \(gameNumber) games")
+        
+        return getWinner()
     }
 }
